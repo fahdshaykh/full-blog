@@ -91,8 +91,9 @@ class PostTest extends TestCase
 
     public function test_update_valid()
     {
+        $user = $this->user();
         // Arrange
-        $post = $this->createDummyBlogPost();
+        $post = $this->createDummyBlogPost($user->id);
 
         $data = $post->toArray();
 
@@ -108,7 +109,7 @@ class PostTest extends TestCase
             'content' => 'content as changed'
         ];
         
-        $this->actingAs($this->user())
+        $this->actingAs($user)
             ->put("/posts/{$post->id}", $params)
             ->assertStatus(302)
             ->assertSessionHas('status');
@@ -128,7 +129,9 @@ class PostTest extends TestCase
 
     public function test_delete()
     {
-        $post = $this->createDummyBlogPost();
+        $user = $this->user();
+
+        $post = $this->createDummyBlogPost($user->id);
 
         $data = $post->toArray();
 
@@ -138,20 +141,21 @@ class PostTest extends TestCase
         ]);
 
 
-        $this->actingAs($this->user())
+        $this->actingAs($user)
             ->delete("/posts/{$post->id}")
             ->assertStatus(302)
             ->assertSessionHas('status');
 
         $this->assertEquals(session('status'), 'Blog post was deleted!');
 
-        $this->assertDatabaseMissing('blog_posts', [
-            'title' => $data['title'],
-            'content' => $data['content']
-        ]);
+        // $this->assertSoftDeleted('blog_posts', $post->toArray());
+        // $this->assertSoftDeleted('blog_posts', [
+        //     'id' => $post->id,
+        // ]);
+        $this->assertSoftDeleted($post);
     }
 
-    private function createDummyBlogPost(): BlogPost
+    private function createDummyBlogPost($userId = null): BlogPost
     {
         // $post = new BlogPost();
         // $post->title = 'New title';
@@ -159,7 +163,9 @@ class PostTest extends TestCase
         // $post->save();
 
         // the state factory is not working in larave 9
-        return \App\Models\BlogPost::factory()->title()->create();
+        return \App\Models\BlogPost::factory()->title()->create([
+            'user_id' => $userId ?? $this->user()->id
+        ]);
 
         // return \App\Models\BlogPost::factory()->create();
         // return $post;
