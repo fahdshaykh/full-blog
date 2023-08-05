@@ -22,6 +22,8 @@
 
         <x-badge type="success" :message="$message" class="mb-4"/>
 
+        <p>Currently read by {{ $counter }} people</p>
+
         <h4>{{ __('Comments') }}</h4>
 
         @forelse ($post->comments as $comment)
