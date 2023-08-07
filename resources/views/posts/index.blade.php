@@ -21,12 +21,17 @@
                 by {{ $post->user->name }}
             </p>
 
+            @forelse ($post->tags as $tag)
+                <x-tags :tagId="$tag->id" :tag="$tag->name"></x-tags>
+            @empty
+                <p>No tags found</p>
+            @endforelse
+
             @if ($post->comments_count)
                 <p>{{ $post->comments_count }} comments</p>
             @else
             <p>No comments yet!</p>
             @endif
-
  
             <div class="row">
                 @auth
@@ -67,7 +72,7 @@
                       <h6 class="card-subtitle mb-2 text-muted">What people are currently talking about.</h6>
                     </div>
                     <ul class="list-group list-group-flush">
-                        @foreach ($most_commented as $post)
+                        @foreach ($mostCommented as $post)
                             <li class="list-group-item">
                                 <a href="{{ route('posts.show', ['post' => $post->id]) }}">
                                     {{ $post->title }}

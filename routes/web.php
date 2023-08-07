@@ -3,6 +3,7 @@
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\PostTagController;
 use Illuminate\Support\Facades\Route;
 use PhpParser\Node\Expr\FuncCall;
 use Illuminate\Support\Facades\Auth;
@@ -24,7 +25,7 @@ Route::get('/secret', [HomeController::class, 'secret'])
     ->name('secret')
     ->middleware('can:home.secret');
 Route::resource('posts', PostsController::class);
-
+Route::get('/posts/tag/{tag}', [PostTagController::class, 'index'])->name('posts.tags.index');
 
 Auth::routes();
 

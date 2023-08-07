@@ -34,23 +34,10 @@ class PostsController extends Controller
 
         // dd(DB::getQueryLog());
 
-        $mostCommented = Cache::tags(['blog-post'])->remember('mostCommented', now()->addSecond(10), function() {
-            return BlogPost::MostCommented()->take(5)->get();
-        });
-
-        $mostActive = Cache::tags(['blog-post'])->remember('mostActive', now()->addSecond(10), function() {
-            return User::withMostBlogPosts()->take(5)->get();
-        });
-        
-        $mostActiveLastMonth = Cache::tags(['blog-post'])->remember('mostActiveLastMonth', now()->addSecond(10), function() {
-            return User::withMostBlogPostsLastMonth()->take(5)->get();
-        });
+        $posts = BlogPost::Latest()->withCount('comments')->with('tags')->with('user')->get();
 
         return view('posts.index', [
-            'posts' => BlogPost::Latest()->withCount('comments')->with('user')->get(),
-            'most_commented' => $mostCommented,
-            'mostActive' => $mostActive,
-            'mostActiveLastMonth' => $mostActiveLastMonth
+            'posts' => $posts
         ]);
     }
 
@@ -105,7 +92,7 @@ class PostsController extends Controller
         // }])->findOrFail($id)]);
 
         $blogpost = Cache::tags(['blog-post'])->remember("blog-post-{$id}", 60, function() use($id) {
-            return BlogPost::with('comments')->findOrFail($id);
+            return BlogPost::with('comments')->with('tags')->findOrFail($id);
         });
 
         $sessionId = session()->getId();
