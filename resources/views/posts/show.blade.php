@@ -31,12 +31,14 @@
 
         <h4>{{ __('Comments') }}</h4>
 
+        @include('comments._form')
+
         @forelse ($post->comments as $comment)
             <p>
                 {{ $comment->content }}
             </p>
             <p class="text-muted">
-                {{ $comment->created_at->diffForHumans() }}
+               Added {{ $comment->created_at->diffForHumans() }} by {{ $comment->user->name }}
             </p>
         @empty
             <p>No comments yet!</p>

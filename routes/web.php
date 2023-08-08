@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostCommentController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\PostTagController;
 use Illuminate\Support\Facades\Route;
@@ -26,7 +27,7 @@ Route::get('/secret', [HomeController::class, 'secret'])
     ->middleware('can:home.secret');
 Route::resource('posts', PostsController::class);
 Route::get('/posts/tag/{tag}', [PostTagController::class, 'index'])->name('posts.tags.index');
-
+Route::resource('posts.comments', PostCommentController::class);
 Auth::routes();
 
 // Route::get('/', function () {
