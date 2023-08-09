@@ -37,6 +37,11 @@ class BlogPost extends Model
         return $this->belongsToMany(Tag::class)->withTimestamps();
     }
 
+    public function image()
+    {
+        return $this->hasOne(Image::class);
+    }
+
     public function scopeLatest(Builder $query)
     {
         return $query->orderBy(static::CREATED_AT, 'desc');
@@ -64,6 +69,7 @@ class BlogPost extends Model
 
         static::deleting(function(BlogPost $blogPost) {
             $blogPost->comments()->delete();
+            // $blogPost->image()->delete();
             Cache::tags(['blog-post'])->forget("blog-post-{$blogPost->id}");
         });
 
