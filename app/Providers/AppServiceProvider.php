@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Http\ViewComposers\ActivityComposer;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 
@@ -25,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Schema::defaultStringLength(191);
         View::composer(['posts.index', 'posts.show'], ActivityComposer::class);
     }
 }

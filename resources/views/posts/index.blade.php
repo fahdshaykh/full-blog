@@ -18,7 +18,7 @@
 
             <p class="text-muted">
                 Added {{ $post->created_at->diffForHumans() }}
-                by {{ $post->user->name }}
+                by <a href="{{ route('users.show', $post->user->id) }}">{{ $post->user->name }}</a>
             </p>
 
             @forelse ($post->tags as $tag)

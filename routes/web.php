@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostCommentController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\PostTagController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use PhpParser\Node\Expr\FuncCall;
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
+Auth::routes();
 Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('/secret', [HomeController::class, 'secret'])
@@ -28,7 +30,7 @@ Route::get('/secret', [HomeController::class, 'secret'])
 Route::resource('posts', PostsController::class);
 Route::get('/posts/tag/{tag}', [PostTagController::class, 'index'])->name('posts.tags.index');
 Route::resource('posts.comments', PostCommentController::class);
-Auth::routes();
+Route::resource('users', UserController::class)->only(['show', 'edit', 'update']);
 
 // Route::get('/', function () {
 //     // return view('welcome');
