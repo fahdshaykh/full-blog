@@ -12,7 +12,7 @@ class Image extends Model
 
     protected $fillable = ['path'];
 
-    public function imageablbe()
+    public function imageable()
     {
         return $this->morphTo(BlogPost::class);
     }

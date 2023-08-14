@@ -20,6 +20,11 @@ class Comment extends Model
         'user_id'
     ];
 
+    public function commentable()
+    {
+        return $this->morphTo(BlogPost::class);
+    }
+
     //the function name blogPost change blog_post_id actually laravel its handle by adding suffix _id after function name;
     public function blogPost()
     {
@@ -41,8 +46,10 @@ class Comment extends Model
         parent::boot();
         
         static::creating(function(Comment $comment) {
-            Cache::tags(['blog-post'])->forget("blog-post-{$comment->blog_post_id}");
-            Cache::tags(['blog-post'])->forget('mostCommentetd');
+            if ($comment->commentable_type === BlogPost::class) {
+                Cache::tags(['blog-post'])->forget("blog-post-{$comment->blog_post_id}");
+                Cache::tags(['blog-post'])->forget('mostCommentetd');
+            }
         });
 
         // static::addGlobalScope(new LatestScope);

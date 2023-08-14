@@ -16,6 +16,19 @@
 
             @commentList(['comments' => $user->commentsOn])
             @endcommentList --}}
+
+            @include('comments._userCommentForm')
+
+            @forelse ($user->commentsOn as $comment)
+                <p>
+                    {{ $comment->content }}
+                </p>
+                <p class="text-muted">
+                Added {{ $comment->created_at->diffForHumans() }} by {{ $comment->user->name }}
+                </p>
+            @empty
+                <p>No comments yet!</p>
+            @endforelse
         </div>
     </div>
 @endsection
