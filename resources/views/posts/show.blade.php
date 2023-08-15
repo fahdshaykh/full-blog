@@ -48,6 +48,12 @@
         @forelse ($post->comments as $comment)
             <p>
                 {{ $comment->content }}
+
+                @forelse ($comment->tags as $tag)
+                    <x-tags :tagId="$tag->id" :tag="$tag->name"></x-tags>
+                @empty
+                    <p>No tags found</p>
+                @endforelse
             </p>
             <p class="text-muted">
                Added {{ $comment->created_at->diffForHumans() }} by {{ $comment->user->name }}
