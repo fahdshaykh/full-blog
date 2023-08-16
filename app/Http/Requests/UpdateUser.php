@@ -23,8 +23,9 @@ class UpdateUser extends FormRequest
      */
     public function rules()
     {
+        //dimensions:width=128,height=128
         return [
-            'avatar' => 'image|mimes:jpg,jpeg,png|max:1024|dimensions:width=128,height=128'
+            'avatar' => 'image|mimes:jpg,jpeg,png|max:1024'
         ];
     }
 }

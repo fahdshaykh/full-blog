@@ -7,6 +7,8 @@ use App\Http\Controllers\PostsController;
 use App\Http\Controllers\PostTagController;
 use App\Http\Controllers\UserCommentController;
 use App\Http\Controllers\UserController;
+use App\Mail\CommentPostedMarkdown;
+use App\Models\Comment;
 use Illuminate\Support\Facades\Route;
 use PhpParser\Node\Expr\FuncCall;
 use Illuminate\Support\Facades\Auth;
@@ -33,6 +35,11 @@ Route::get('/posts/tag/{tag}', [PostTagController::class, 'index'])->name('posts
 Route::resource('posts.comments', PostCommentController::class)->only(['store']);
 Route::resource('users.comments', UserCommentController::class)->only(['store']);
 Route::resource('users', UserController::class)->only(['show', 'edit', 'update']);
+
+Route::get('/mailable', function() {
+    $comment = Comment::find(1);
+    return new CommentPostedMarkdown($comment);
+});
 
 // Route::get('/', function () {
 //     // return view('welcome');

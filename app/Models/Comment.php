@@ -21,9 +21,13 @@ class Comment extends Model
         'user_id'
     ];
 
+    // public function commentable()
+    // {
+    //     return $this->morphTo(BlogPost::class);
+    // }
     public function commentable()
     {
-        return $this->morphTo(BlogPost::class);
+        return $this->morphTo();
     }
 
     //the function name blogPost change blog_post_id actually laravel its handle by adding suffix _id after function name;
