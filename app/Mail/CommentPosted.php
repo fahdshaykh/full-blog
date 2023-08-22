@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\Comment;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -16,14 +17,16 @@ class CommentPosted extends Mailable
     use Queueable, SerializesModels;
 
     public $comment;
+    public $user;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Comment $comment)
+    public function __construct(Comment $comment, User $user)
     {
         $this->comment = $comment;
+        $this->user = $user;
     }
 
     /**
@@ -64,9 +67,9 @@ class CommentPosted extends Mailable
         // ];
 
         return [
-            Attachment::fromStorageDisk('public', $this->comment->user->image->path ?? '')
-                    ->as('user_profile.jpg')
-                    ->withMime('image/jpg'),
+            // Attachment::fromStorageDisk('public', $this->comment->user->image->path ?? '')
+            //         ->as('user_profile.jpg')
+            //         ->withMime('image/jpg'),
         ];
     }
 }

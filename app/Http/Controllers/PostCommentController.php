@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreComment;
+use App\Jobs\NotifyUsersPostWasCommented;
+use App\Jobs\ThrottledMail;
 use App\Mail\CommentPosted;
 use App\Models\BlogPost;
 use Illuminate\Http\Request;
@@ -48,9 +50,29 @@ class PostCommentController extends Controller
             'user_id' => $request->user()->id
         ]);
 
-        Mail::to($post->user)->send(
-            new CommentPosted($comment)
-        );
+        //method #1 implements ShouldQueue in mailable class
+        // Mail::to($post->user)->send(
+        //     new CommentPosted($comment)
+        // );
+
+        // method #2 change send method to queue
+        // Mail::to($post->user)->queue(
+        //     new CommentPosted($comment)
+        // );
+
+        // method #3 change send method to queue via time
+        // $when = now()->addMinutes(1);
+        // Mail::to($post->user)->later(
+        //     $when,
+        //     new CommentPosted($comment)
+        // );
+
+        // ThrottledMail::dispatch(
+        //     new CommentPosted($comment, $post->user)
+        // );
+
+        NotifyUsersPostWasCommented::dispatch($comment);
+        // ->onQueue('high');
 
         return redirect()->back()->withStatus('status', 'Comment was created');
     }
