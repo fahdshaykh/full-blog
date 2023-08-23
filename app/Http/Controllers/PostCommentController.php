@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CommentPostedEvent;
 use App\Http\Requests\StoreComment;
 use App\Jobs\NotifyUsersPostWasCommented;
 use App\Jobs\ThrottledMail;
@@ -50,6 +51,9 @@ class PostCommentController extends Controller
             'user_id' => $request->user()->id
         ]);
 
+        
+        // event(new CommentPostedEvent($comment));
+
         //method #1 implements ShouldQueue in mailable class
         // Mail::to($post->user)->send(
         //     new CommentPosted($comment)
@@ -71,8 +75,9 @@ class PostCommentController extends Controller
         //     new CommentPosted($comment, $post->user)
         // );
 
-        NotifyUsersPostWasCommented::dispatch($comment);
-        // ->onQueue('high');
+
+        NotifyUsersPostWasCommented::dispatch($comment)
+        ->onQueue('high');
 
         return redirect()->back()->withStatus('status', 'Comment was created');
     }

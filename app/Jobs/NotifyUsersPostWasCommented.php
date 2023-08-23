@@ -46,7 +46,7 @@ class NotifyUsersPostWasCommented implements ShouldQueue
                 ThrottledMail::dispatch(
                     new CommentPosted($this->comment, $user),
                     $user
-                );
+                ); 
                 // Mail::to($user)->later(
                 //     $now->addSeconds(6),
                 //     new CommentPosted($this->comment, $user)

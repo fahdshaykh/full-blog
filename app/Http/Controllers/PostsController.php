@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\BlogPostPosted;
 use App\Http\Requests\StorePost;
 use App\Models\BlogPost;
 use App\Models\Image;
@@ -92,6 +93,8 @@ class PostsController extends Controller
         // $blogPost->title = $validated['title'];
         // $blogPost->content = $validated['content'];
         // $blogPost->save();
+
+        event(new BlogPostPosted($blogPost));
 
         session()->flash('status', 'Blog post was created!');
 
