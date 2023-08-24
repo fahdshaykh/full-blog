@@ -19,6 +19,7 @@ class PostsController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->only(['create','store','edit','update','destroy']);
+        // $this->middleware('locale');
     }
     /**
      * Display a listing of the resource.

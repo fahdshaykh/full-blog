@@ -39,7 +39,8 @@
             <p>No tags found</p>
         @endforelse
         
-        <p>Currently read by {{ $counter }} people</p>
+        {{-- <p>Currently read by {{ $counter }} people</p> --}}
+        <p>{{ trans_choice('messages.people.reading', $counter) }}</p>
 
         <h4>{{ __('Comments') }}</h4>
 

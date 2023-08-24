@@ -34,7 +34,7 @@
                 @error('name')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
-                {{-- <div class="form-group">
+                <div class="form-group">
                     <label>{{ __('Language:') }}</label>
                     <select class="form-control" name="locale">
                         @foreach(App\Models\User::LOCALES as $locale => $label)
@@ -43,7 +43,7 @@
                             </option>
                         @endforeach
                     </select>
-                </div> --}}
+                </div>
 
                 {{-- @errors @enderrors --}}
 
