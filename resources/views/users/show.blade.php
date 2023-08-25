@@ -17,6 +17,8 @@
             @commentList(['comments' => $user->commentsOn])
             @endcommentList --}}
 
+            <p>Currently viewed by {{ $counter }} other users</p>
+
             @include('comments._userCommentForm')
 
             @forelse ($user->commentsOn as $comment)
