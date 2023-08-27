@@ -10,6 +10,7 @@ use App\Mail\CommentPosted;
 use App\Models\BlogPost;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Resources\Comment as CommentResource;
 
 class PostCommentController extends Controller
 {
@@ -23,9 +24,11 @@ class PostCommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(BlogPost $post)
     {
-        //
+        return CommentResource::collection($post->comments()->with('user')->get());
+        // return CommentResource::collection($post->comments);
+        // return $post->comments()->with('user')->get();
     }
 
     /**
